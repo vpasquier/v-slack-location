@@ -5,13 +5,13 @@ exports.handler = function(event, context) {
   console.log("Start Lambda - Payload content:", event);
 
   if (event.token !== config.token) {
-    return context.fail("Unauthorized request. Check [docUrl]");
+    return context.fail("Unauthorized request. This token is not valid:" + config.token);
   }
 
-  console.log("Slack Command Token is correct...");
+  console.log("Slack Command Token is correct.");
 
   request("https://slack.com/api/users.list?token=" + config.oauthToken, function(error, response, body) {
-    console.log("Returning from the Slack member list access call...");
+    console.log("Returning from the Slack member list access call.");
 
     if (error || !response) {
       return context.fail("Cannot access to Slack team - " + error);
