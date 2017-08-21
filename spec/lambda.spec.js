@@ -1,43 +1,33 @@
 var proxyquire = require('proxyquire');
+var config = require('./config-test.json');
 
-describe('myLambda', function() {
-  var lambda;
-  var context;
-  var libMock;
+describe('Lambda Slack Location', function () {
+    let lambda, context;
 
-  beforeEach(function() {
-    libMock = jasmine.createSpyObj('libMock', ['getMessage'])
-    lambda = proxyquire('../index.js', {
-      './lib/example.js': libMock
+    beforeEach(function () {
+        lambda = proxyquire('../index', {});
+        context = jasmine.createSpyObj('context', ['done', 'succeed', 'fail']);
     });
-    context = jasmine.createSpyObj('contextSpy', ['done', 'succeed', 'fail']);
-  });
 
-  it('should greet the world', function() {
-    var evnt = {
-      type: 'cruel'
-    };
+    it('should return a token check failure', function () {
+        let evnt = {
+            token: 'fail'
+        };
+        waitsFor(lambda.handler(evnt, context),"The Ajax call timed out.",5000);
+        runs(function () {
+            expect(context.fail).toHaveBeenCalled();
+            expect(context.succeed).not.toHaveBeenCalled();
+        });
+    });
 
-    libMock.getMessage.and.returnValue('Hello cruel world!');
-
-    lambda.handler(evnt, context);
-
-    expect(libMock.getMessage).toHaveBeenCalledWith('cruel');
-    expect(context.succeed).toHaveBeenCalledWith('Hello cruel world!');
-    expect(context.done).not.toHaveBeenCalled();
-    expect(context.fail).not.toHaveBeenCalled();
-  });
-
-  it('should fail', function() {
-    var evnt = {
-      type: null
-    };
-
-    lambda.handler(evnt, context);
-
-    expect(libMock.getMessage).not.toHaveBeenCalled();
-    expect(context.succeed).not.toHaveBeenCalled();
-    expect(context.done).not.toHaveBeenCalled();
-    expect(context.fail).toHaveBeenCalledWith('No type provided!');
-  });
+    it('should succeed', function () {
+        let evnt = {
+            token: config.token
+        };
+        waitsFor(lambda.handler(evnt, context),"The Ajax call timed out.",5000);
+        runs(function () {
+            expect(context.fail).toHaveBeenCalled();
+            expect(context.succeed).not.toHaveBeenCalled();
+        });
+    });
 });
