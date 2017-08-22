@@ -32,7 +32,11 @@ exports.handler = function (event, context) {
             if (!bot && profile.real_name !== "slackbot") {
                 let id = profile.status_emoji;
                 if (!id) {
-                    id = ":earth_africa:";
+                    return;
+                }else{
+                    if(id.indexOf("flag")==-1) {
+                        return;
+                    }
                 }
                 if (!statusList[id]) {
                     statusList[id] = [];
