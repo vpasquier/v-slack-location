@@ -2,9 +2,9 @@
 
 [![Join the chat at https://gitter.im/v-ges/Lobby](https://badges.gitter.im/v-slack-location/Lobby.svg)](https://gitter.im/v-slack-location/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-`Slack Location` is a tool to quickly view Slack team members sorted by location (depending on their status icon, text or timezone).
+`Slack Location` is a tool to quickly view Slack team members sorted by location (depending on their status icon or text). Looking for the timezone is not implemented because you need for each user to call [this](https://api.slack.com/methods/users.info) and this tool has no tracking purpose :)
 
-It is an example of a Serverless Slack Command Integration using AWS Lambda and AWS API Gateway.
+It is just an example of a Serverless Slack Command Integration using AWS Lambda and AWS API Gateway.
 
 ## The example flow
 
